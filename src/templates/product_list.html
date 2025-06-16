@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Product in Session</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen py-10 px-4">
+
+  <h1>Products</h1>
+  <ul>
+    {% for product in products %}
+      <li>
+        <h3>{{ product.name }}</h3>
+        <img src="{{ product.image.url }}" height="100">
+        <p>{{ product.description }}</p>
+        <p>Price: ₹{{ product.price }}</p>
+        <a href="{% url 'add_to_cart' product.id %}">Add to Cart</a>
+      </li>
+    {% endfor %}
+  </ul>
+  <a href="{% url 'view_cart' %}">Go to Cart</a>
+  
+
+</body>
+</html>

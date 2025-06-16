@@ -11,7 +11,7 @@ class Customer(models.Model):
     last_name = models.CharField(max_length=100, default= None, null=True, blank=True)
     email = models.EmailField(max_length=100, default= None, null=True, blank=True, unique=True)
     
-    
+    USERNAME_FIELD = 'email'
     def __str__(self):
         return self.first_name
 

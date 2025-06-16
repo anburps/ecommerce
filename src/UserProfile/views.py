@@ -24,24 +24,24 @@ def signup(request):
     return render(request, 'UserProfile/signup.html', context)
 
 def signin(request):
-    cart = Cart.objects.get(session_id = request.session['nonuser'], completed=False)
+    print("sdfdas53245234523")
     if request.method == 'POST':
         email = request.POST['email']
+        print(email)
         password = request.POST['password']
+        print(password)
         user = authenticate(request, email=email, password=password)
+        print(user)
         if user is not None:
             login(request, user)
-            cart.owner = request.user.customer
-            cart.save()
-            return redirect('checkout')
-           
+            next_url = request.GET.get('next') or request.POST.get('next') or 'product'
+            print("next_url:", next_url)
+            messages.success(request, 'Login successful')
+            return redirect(next_url)
         else:
             messages.info(request, 'Invalid credentials')
-            
-    
-    print(cart.owner)
-    context = {'cart':cart}
-    return render(request, 'UserProfile/login.html', context)
+
+    return render(request, 'registration/login.html', {'next': request.GET.get('next', '')})
 
 def signout(request):
     logout(request)

@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'app',
     'rest_framework',
     'UserProfile',
+    'shop',
+    'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [
@@ -57,7 +59,7 @@ ROOT_URLCONF = 'Ekart.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -101,6 +103,10 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+AUTHENTICATION_BACKENDS = [
+    'UserProfile.authentication.EmailBackend',  # Custom backend
+    'django.contrib.auth.backends.ModelBackend',  # Fallback to default backend
+]
 
 
 # Internationalization
@@ -124,3 +130,17 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
+SESSION_COOKIE_AGE = 300
+
+# Save session data on every request
+# SESSION_SAVE_EVERY_REQUEST = True
+
+# Expire session when browser closes
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
