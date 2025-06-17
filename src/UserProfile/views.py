@@ -34,14 +34,13 @@ def signin(request):
         print(user)
         if user is not None:
             login(request, user)
-            next_url = request.GET.get('next') or request.POST.get('next') or 'product'
-            print("next_url:", next_url)
+           
             messages.success(request, 'Login successful')
-            return redirect(next_url)
+            return redirect('checkout')
         else:
             messages.info(request, 'Invalid credentials')
 
-    return render(request, 'registration/login.html', {'next': request.GET.get('next', '')})
+    return render(request, 'registration/login.html'  )
 
 def signout(request):
     logout(request)

@@ -6,12 +6,26 @@
     <title>LOGIN PAGE</title>
 </head>
 <body>
-    <h2>Login</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Login</button>
-</form>
+    <div>
+        <form action="" method="post">{% csrf_token %}
+        <!-- <div>
+            <label for="email " class="form-label">email</label>
+            <input type="email" name="email" id="email" >  
+        </div> -->
+        <div>
+            <label for="username" class="form-label">username</label>
+            <input type="text" name="username" id="username">
+        </div>
+        <div>
+            <label for="password" class="form-label">password</label>
+            <input type="password" name="password" id="password">
+        </div>
+        <button type="submit">Login</button>
+         </form>
+    </div>
+    
+    <p>Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
+    
 
     
 </body>

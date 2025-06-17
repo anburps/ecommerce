@@ -8,9 +8,18 @@
 <body>
     <h2 class="text-2xl font-bold mb-4">Checkout for {{ user.username }}</h2>
 
-    <h1>Thank you for your purchase!</h1>
-    <p>Your order ID is {{ order.id }}</p>
-    <a href="{% url 'product_list' %}">Continue Shopping</a>
+<h1>Thank you for your purchase!</h1>
+<p>Your order ID is {{ order.id }}</p>
+
+{% for item in order_items %}
+    <div class="mb-4" style="border: 1px solid #ccc; padding: 10px;">
+        <p><strong>Product Name:</strong> {{ item.product_name }}</p>
+        <p><strong>Quantity:</strong> {{ item.quantity }}</p>
+        <p><strong>Price:</strong> ${{ item.price }}</p>
+    </div>
+{% endfor %}
+
+<a href="{% url 'product_list' %}" class="btn btn-primary">Continue Shopping</a>
 
 </body>
 </html>

@@ -39,4 +39,10 @@ def checkout(request):
             price=product.price,
         )
     request.session['cart'] = {}
-    return render(request, 'checkout.html', {'cart': order})
+    print("dfdgdfgdfgdf",order)
+    order_items = order.orderitem_set.all()
+
+    return render(request, 'checkout.html', {
+        'order': order,
+        'order_items': order_items
+    })
