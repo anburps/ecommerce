@@ -3,24 +3,46 @@ from .models import Product, Order, OrderItem
 from django.contrib.auth.decorators import login_required
 
 def product_list(request):
-    products = Product.objects.all()
-    return render(request, 'product_list.html', {'products': products})
+
+    cart = request.session.get('cart', {})
+
+    total_quantity = sum(cart.values())
+    context = {
+        'products': Product.objects.all(),
+        'cart_qty': total_quantity
+    }
+    return render(request, 'product_list.html', context)
 
 def add_to_cart(request, product_id):
+    quantity = int(request.POST.get('quantity', 1))
     cart = request.session.get('cart', {})
-    cart[str(product_id)] = cart.get(str(product_id), 0) + 1
+    product_id_str = str(product_id)
+    cart[product_id_str] = cart.get(product_id_str, 0) + quantity
     request.session['cart'] = cart
+
+    total_quantity = sum(cart.values())
+    request.session['cart_count'] = total_quantity  
+
     return redirect('product_list')
 
 def view_cart(request):
     cart = request.session.get('cart', {})
-    products = Product.objects.filter(id__in=cart.keys())
-    cart_items = []
-    for product in products:
-        quantity = cart[str(product.id)]
-        total_price = product.price * quantity
-        cart_items.append({'product': product, 'quantity': quantity, 'total': total_price})
-    return render(request, 'cart.html', {'cart': cart_items})
+    items = []
+
+    for product_id, quantity in cart.items():
+        if quantity > 0:
+            product = Product.objects.get(id=product_id)
+            items.append({
+                'product': product,
+                'quantity': quantity,
+                'total': quantity * product.price
+            })
+
+    context = {
+        'cart_items': items,
+        'cart_count': sum(cart.values())
+    }
+    return render(request, 'cart.html', context)
 
 @login_required(login_url='login')
 
@@ -46,3 +68,4 @@ def checkout(request):
         'order': order,
         'order_items': order_items
     })
+
